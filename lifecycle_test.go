@@ -1,4 +1,4 @@
-package zinc_test
+package vaco_test
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rjeczalik/zinc"
+	"github.com/rjeczalik/vaco"
 )
 
 func funcs(fns ...func(context.Context) error) []func(context.Context) error { return fns }
@@ -26,22 +26,22 @@ func timeout(mili time.Duration) context.Context {
 
 func TestLifecycle(t *testing.T) {
 	cases := map[string]struct {
-		l     *zinc.Lifecycle
+		l     *vaco.Lifecycle
 		funcs []func(context.Context) error
 		err   error
 	}{
 		"early done": {
-			&zinc.Lifecycle{Context: timeout(10)},
+			&vaco.Lifecycle{Context: timeout(10)},
 			funcs(fn(0, nil), fn(0, nil), fn(25*time.Millisecond, nil)),
 			nil,
 		},
 		"timeout": {
-			&zinc.Lifecycle{Context: timeout(50), Timeout: 100 * time.Millisecond},
+			&vaco.Lifecycle{Context: timeout(50), Timeout: 100 * time.Millisecond},
 			funcs(fn(0, nil), fn(0, nil), fn(150*time.Millisecond, nil)),
-			zinc.ErrTimeout(100 * time.Millisecond),
+			vaco.ErrTimeout(100 * time.Millisecond),
 		},
 		"error": {
-			&zinc.Lifecycle{Context: timeout(100)},
+			&vaco.Lifecycle{Context: timeout(100)},
 			funcs(fn(0, nil), fn(0, nil), fn(0, io.EOF)),
 			io.EOF,
 		},

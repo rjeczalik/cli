@@ -1,4 +1,4 @@
-package zinc // import github.com/rjeczalik/zinc
+package vaco // import github.com/rjeczalik/vaco
 
 import (
 	"context"
